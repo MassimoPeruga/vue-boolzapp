@@ -1,0 +1,53 @@
+[v-cloak] {
+    display: none;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    font-family: 'Lato', sans-serif;
+    background: rgb(0, 150, 136);
+    background: linear-gradient(180deg, rgba(0, 150, 136, 1) 15%, rgba(220, 219, 211, 1) 15%);
+    background-repeat: no-repeat;
+    display: flex;
+}
+
+#app {
+    height: 95%;
+    width: 95%;
+    max-width: 1800px;
+    margin: auto;
+    display: flex;
+    box-shadow: 1px solid rgba(0, 0, 0, .5);
+}
+
+i {
+    cursor: pointer;
+    font-size: 1.25rem;
+}
+
+/* Elemento persona */
+.element {
+    background-color: #eaeaea;
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.element img {
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.element i {
+    color: #b1b1b1;
+    margin-left: 20px;
+}
+
+/* Responsive */
+@media (min-width: 992px) {
+    #app {
+        width: 75%;
+    }
+}
