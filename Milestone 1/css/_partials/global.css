@@ -6,8 +6,8 @@ body {
     height: 100vh;
     width: 100vw;
     font-family: 'Lato', sans-serif;
-    background: rgb(0, 150, 136);
-    background: linear-gradient(180deg, rgba(0, 150, 136, 1) 15%, rgba(220, 219, 211, 1) 15%);
+    background: #009688;
+    background: linear-gradient(180deg, #009688 15%, #dcdbd3 15%);
     background-repeat: no-repeat;
     display: flex;
 }
@@ -18,7 +18,7 @@ body {
     max-width: 1800px;
     margin: auto;
     display: flex;
-    box-shadow: 1px solid rgba(0, 0, 0, .5);
+    box-shadow: 1px solid #00000080;
 }
 
 i {

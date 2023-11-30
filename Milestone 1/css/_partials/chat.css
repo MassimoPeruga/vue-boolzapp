@@ -9,6 +9,13 @@
     flex-grow: 1;
     background-image: url('../../img/mine.jpg');
     overflow-y: scroll;
+    padding: 5% 10%;
+}
+
+#messages>* {
+    width: 35%;
+    padding: 5px;
+    border-radius: 5px;
 }
 
 #chat footer {
@@ -33,7 +40,7 @@
 }
 
 #chat footer input:focus-visible {
-    outline: 1px solid rgba(0, 150, 136, .5);
+    outline: 1px solid #00968880;
 }
 
 /* Messaggio rivevuto/inviato */
@@ -42,5 +49,5 @@
 }
 
 .received {
-    background-color: white
+    background-color: #ffffff;
 }

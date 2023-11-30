@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Boolzapp</title>
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -63,7 +63,7 @@
             <!-- Lista  contatti -->
             <ul>
                 <!-- Elemento Persona -->
-                <li class="element" v-for="(contact, index) in user.contacts"
+                <li class="element" v-for="(contact, index) in user.contacts" role="button"
                     :class="{ active: user.contacts[index].name === 'Michele' }">
                     <img :src="user.contacts[index].avatar" alt="`${user.contacts[index].name} avatar`"
                         class="my-auto d-none d-md-block">
@@ -93,7 +93,7 @@
             </div>
             <!-- /Elemento Persona -->
             <!-- Messaggi -->
-            <div id="messages"></div>
+            <ul id="messages"></ul>
             <!-- /Messaggi -->
             <!-- Input Nuovo Messaggio -->
             <footer>
