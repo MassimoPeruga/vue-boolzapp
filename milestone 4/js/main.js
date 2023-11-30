@@ -1,16 +1,21 @@
 'use strict';
 
+// Importa la libreria DateTime da Luxon
+const { DateTime } = luxon;
+// Importa la funzione createApp da Vue
 const { createApp } = Vue;
 
 const myApp = createApp({
     data() {
         return {
-            activeContact: undefined,
+            activeContact: undefined, // Indice del contatto attualmente attivo
             newMessage: '', // Input per i nuovi Messaggi
-            keyWord: '', // Input per la ricerca dei contatti
+            keyWord: '', // Parola chiave per la ricerca dei contatti
+            // Dati dell'utente
             user: {
                 name: 'Sofia',
                 avatar: 'img/avatar_io.jpg',
+                // Lista dei contatti
                 contacts: [
                     {
                         name: 'Michele',
@@ -178,41 +183,38 @@ const myApp = createApp({
         };
     },
     methods: {
-        changeActiveContact(index) {
-            if (this.activeContact !== index) {
-                this.activeContact = index;
-            }
-            return this.activeContact;
-        },
+        // Restituisce il testo troncato e la data formattata dell'ultimo messaggio nella chat di un contatto, 
+        getLastMessage(contact) {
+            if (contact && contact.messages && contact.messages.length > 0) {
+                const lastMessage = contact.messages[contact.messages.length - 1];
 
-        simulateResponse() {
-            this.user.contacts[this.activeContact].messages.push(
-                {
-                    date: '10/01/2020 15:30:55',
-                    message: 'Ok.',
-                    status: 'received'
+                const lastDate = DateTime.fromFormat(lastMessage.date, 'dd/MM/yyyy HH:mm:ss');
+                let truncatedMessage = lastMessage.message;
+                if (lastMessage.message.length > 25) {
+                    truncatedMessage = lastMessage.message.slice(0, 22) + '...';
                 }
-            );
-        },
-
-        addMessage() {
-            // Verifica se il nuovo Messaggio non è vuoto
-            if (this.newMessage.trim() !== '' && this.activeContact !== undefined) {
-                this.user.contacts[this.activeContact].messages.push(
-                    {
-                        date: '10/01/2020 15:30:55',
-                        message: this.newMessage,
-                        status: 'sent'
-                    }
-                );
-                setTimeout(() => {
-                    this.simulateResponse();
-                }, 3000);
+                return { time: lastDate.toFormat('HH:mm'), message: truncatedMessage };
             }
-            // Svuota il campo di input
-            this.newMessage = '';
+            return { time: '', message: '' };
         },
 
+        // Ottiene l'orario dell'ultimo messaggio ricevuto
+        getLastMessageReceivedTime() {
+            if (this.activeContact !== undefined) {
+                const receivedMessages = this.filterContacts()[this.activeContact].messages
+                    .filter(message => message.status === 'received');
+
+                const lastReceivedMessage = receivedMessages.slice(-1)[0];
+
+                if (lastReceivedMessage) {
+                    const luxonDate = DateTime.fromFormat(lastReceivedMessage.date, 'dd/MM/yyyy HH:mm:ss');
+                    return luxonDate.toFormat('HH:mm');
+                }
+            }
+            return '';
+        },
+
+        // Filtra i contatti in base alla parola chiave inserita nell'input di ricerca
         filterContacts() {
             if (this.keyWord.trim() !== '') {
                 return this.user.contacts
@@ -223,5 +225,49 @@ const myApp = createApp({
                 return this.user.contacts;
             }
         },
+
+        // Cambia l'indice del contatto attivo
+        changeActiveContact(index) {
+            if (this.activeContact !== index) {
+                this.activeContact = index;
+            }
+            return this.activeContact;
+        },
+
+        // Formatta la data del messaggio usando Luxon
+        formatMessageDate(dateTime) {
+            const luxonDate = DateTime.fromFormat(dateTime, 'dd/MM/yyyy HH:mm:ss');
+            return luxonDate.toFormat('HH:mm');
+        },
+
+        // Simula una risposta al messaggio
+        simulateResponse(contactIndex) {
+            const now = DateTime.local();
+            this.user.contacts[contactIndex].messages.push({
+                date: now.toFormat('dd/MM/yyyy HH:mm:ss'),
+                message: 'Ok.',
+                status: 'received'
+            });
+        },
+
+        // Aggiunge un nuovo messaggio contenente al testo digitato nell'input della chat con il contatto
+        addMessage() {
+            if (this.newMessage.trim() !== '' && this.activeContact !== undefined) {
+                const contactIndex = this.user.contacts.indexOf(this.filterContacts()[this.activeContact]);
+                const now = DateTime.local();
+
+                this.user.contacts[contactIndex].messages.push({
+                    date: now.toFormat('dd/MM/yyyy HH:mm:ss'),
+                    message: this.newMessage,
+                    status: 'sent',
+                });
+                // Simula una risposta dopo 3 secondi
+                setTimeout(() => {
+                    this.simulateResponse(contactIndex);
+                }, 3000);
+            }
+            this.newMessage = '';
+        },
+
     },
 }).mount('#app');

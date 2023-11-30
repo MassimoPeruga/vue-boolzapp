@@ -26,6 +26,11 @@
     <link rel="stylesheet" href="css/style.css" />
     <!-- /il mio foglio di stile -->
 
+
+    <!-- Libreria Luxon -->
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
+    <!-- Libreria Luxon -->
+
     <!-- Vue.js -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <!-- /Vue.js -->
@@ -69,13 +74,16 @@
                 <!-- Elemento Persona -->
                 <li class="element" v-for="(contact, index) in filterContacts()" role="button"
                     :class="{ 'active': index === activeContact }" @click="changeActiveContact(index)">
-                    <img :src="user.contacts[index].avatar" alt="`${user.contacts[index].name} avatar`"
-                        class="my-auto d-none d-md-block">
+                    <img :src="contact.avatar" alt="`${contact.name} avatar`" class="my-auto d-none d-md-block">
                     <div class="me-auto">
-                        <h5 class="mb-0">{{user.contacts[index].name}}</h5>
-                        <h6 class="mb-0 fw-light overflow-hidden d-none d-sm-block">Ultimo messaggio inviato</h6>
+                        <h5 class="mb-0">{{contact.name}}</h5>
+                        <h6 class="mb-0 fw-light overflow-hidden d-none d-sm-block" v-if="getLastMessage()">
+                            {{ getLastMessage(contact).message }}
+                        </h6>
                     </div>
-                    <span class="fw-light ms-2 d-none d-lg-block">12:00</span>
+                    <span class="fw-light ms-2 d-none d-lg-block" v-if="getLastMessage()">
+                        {{ getLastMessage(contact).time }}
+                    </span>
                 </li>
                 <!-- /Elemento Persona -->
             </ul>
@@ -86,11 +94,13 @@
         <div id="chat">
             <!-- /Elemento Persona -->
             <div class="element">
-                <img v-if="user.contacts[activeContact]" :src="user.contacts[activeContact].avatar"
-                    :alt="`${user.contacts[activeContact].name} avatar`" class="d-none d-sm-block">
+                <img v-if="filterContacts()[activeContact]" :src="filterContacts()[activeContact].avatar"
+                    :alt="`${filterContacts()[activeContact].name} avatar`" class="d-none d-sm-block">
                 <div class="me-auto">
-                    <h5 class="mb-1">{{ user.contacts[activeContact]?.name }}</h5>
-                    <h6 class="mb-0 fw-light">Ultimo Accesso</h6>
+                    <h5 class="mb-1">{{ filterContacts()[activeContact]?.name }}</h5>
+                    <h6 class="mb-0 fw-light" v-if="getLastMessageReceivedTime()">
+                        Ultimo messaggio alle: {{ getLastMessageReceivedTime() }}
+                    </h6>
                 </div>
                 <i class="fa-solid fa-magnifying-glass d-none d-md-block"></i>
                 <i class="fa-solid fa-paperclip d-none d-md-block"></i>
@@ -99,10 +109,10 @@
             <!-- /Elemento Persona -->
             <!-- Messaggi -->
             <ul id="messages" class="list-unstyled m-0">
-                <li v-for="(message, index) in user.contacts[activeContact]?.messages" :class="{ 'sent': user.contacts[activeContact].messages[index].status === 'sent', 
-                    'received': user.contacts[activeContact].messages[index].status !== 'sent'}">
+                <li v-for="(message, index) in filterContacts()[activeContact]?.messages" :class="{ 'sent': filterContacts()[activeContact].messages[index].status === 'sent', 
+            'received': filterContacts()[activeContact].messages[index].status !== 'sent'}">
                     <p class="m-0">{{message.message}}</p>
-                    <span class="m-0 fw-light">12:00</span>
+                    <span class="m-0 fw-light">{{formatMessageDate(message.date)}}</span>
                 </li>
             </ul>
             <!-- /Messaggi -->
