@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boolzapp</title>
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- /Bootstrap 5 -->
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- FontAwesome -->
+
+    <!-- Google Font Lato -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- /Google Font Lato -->
+
+    <!-- il mio foglio di stile -->
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- /il mio foglio di stile -->
+
+    <!-- Vue.js -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- /Vue.js -->
+</head>
+
+<body>
+    <main id="app" v-cloak>
+        <!-- Sezione menu -->
+        <div id="menu">
+            <header>
+                <!-- Elemento Persona -->
+                <div class="element">
+                    <img :src="user.avatar" :alt="`${user.name} avatar`" class="d-none d-sm-block">
+                    <h5 class="mb-0 me-auto">{{user.name}}</h5>
+                    <i class="fa-solid fa-circle-notch d-none d-lg-block"></i>
+                    <i class="fa-solid fa-message d-none d-lg-block"></i>
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div>
+                <!-- /Elemento Persona -->
+                <!-- Alert -->
+                <div id="alert" class="d-none d-lg-flex">
+                    <i class="fa-solid fa-bell-slash"></i>
+                    <div>
+                        <p class="m-0">Ricevi notifiche di nuovi messaggi</p>
+                        <a href="#">Attiva notifiche desktop</a>
+                    </div>
+                </div>
+                <!-- Alert -->
+                <!-- Input di ricerca -->
+                <div id="search_container">
+                    <div class="input-group">
+                        <i id="search" class="fa-solid fa-magnifying-glass input-group-text"></i>
+                        <input type="text" class="form-control" placeholder="Cerca o inizia una nuova chat"
+                            aria-describedby="search">
+                    </div>
+                </div>
+                <!-- /Input di ricerca -->
+            </header>
+            <!-- Lista  contatti -->
+            <ul>
+                <!-- Elemento Persona -->
+                <li class="element" v-for="(contact, index) in user.contacts" role="button"
+                    :class="{ 'active': index === activeContact }" @click="changeActiveContact(index)">
+                    <img :src="user.contacts[index].avatar" alt="`${user.contacts[index].name} avatar`"
+                        class="my-auto d-none d-md-block">
+                    <div class="me-auto">
+                        <h5 class="mb-0">{{user.contacts[index].name}}</h5>
+                        <h6 class="mb-0 fw-light overflow-hidden d-none d-sm-block">Ultimo messaggio inviato</h6>
+                    </div>
+                    <span class="fw-light ms-2 d-none d-lg-block">12:00</span>
+                </li>
+                <!-- /Elemento Persona -->
+            </ul>
+            <!-- /Lista  contatti -->
+        </div>
+        <!-- /Sezione menu -->
+        <!-- Sezione Chat -->
+        <div id="chat">
+            <!-- /Elemento Persona -->
+            <div class="element">
+                <img v-if="user.contacts[activeContact]" :src="user.contacts[activeContact].avatar"
+                    :alt="`${user.contacts[activeContact].name} avatar`" class="d-none d-sm-block">
+                <div class="me-auto">
+                    <h5 class="mb-1">{{ user.contacts[activeContact]?.name }}</h5>
+                    <h6 class="mb-0 fw-light">Ultimo Accesso</h6>
+                </div>
+                <i class="fa-solid fa-magnifying-glass d-none d-md-block"></i>
+                <i class="fa-solid fa-paperclip d-none d-md-block"></i>
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+            </div>
+            <!-- /Elemento Persona -->
+            <!-- Messaggi -->
+            <ul id="messages" class="list-unstyled m-0">
+                <li v-for="(message, index) in user.contacts[activeContact]?.messages" :class="{ 'sent': user.contacts[activeContact].messages[index].status === 'sent', 
+                    'received': user.contacts[activeContact].messages[index].status !== 'sent'}">
+                    <p class="m-0">{{message.message}}</p>
+                    <span class="m-0 fw-light">12:00</span>
+                </li>
+            </ul>
+            <!-- /Messaggi -->
+            <!-- Input Nuovo Messaggio -->
+            <footer>
+                <i class="fa-regular fa-face-smile"></i>
+                <input type="text" placeholder="Scrivi un messaggio" v-model="newMessage" @keyup.enter="addMessage">
+                <i class="fa-solid fa-microphone"></i>
+            </footer>
+            <!-- /Input Nuovo Messaggio -->
+        </div>
+        <!-- /Sezione Chat -->
+    </main>
+
+    <!-- il mio script -->
+    <script src="js/main.js"></script>
+    <!-- il mio script -->
+</body>
+
+</html>

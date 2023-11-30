@@ -9,3 +9,10 @@ Replica della grafica (in allegato) con la possibilità di avere messaggi scritt
 ## Milestone 2
 
 Il click sul contatto mostra la conversazione del contatto cliccato. Visualizzazione dinamica dei messaggi: tramite la direttiva v-for, vengono visualizzati tutti i messaggi relativi al contatto attivo all’interno del pannello della conversazione.
+
+
+
+## Milestone 3
+
+Aggiunta di un messaggio: l’utente può scrivere un testo nella parte bassa e digitando “enter” il testo viene aggiunto al thread sopra, come messaggio verde
+Risposta dall’interlocutore: ad ogni inserimento di un messaggio, l’utente riceverà un “ok” come risposta, che apparirà dopo 3 secondi.
