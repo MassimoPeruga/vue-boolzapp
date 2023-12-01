@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boolzapp</title>
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- /Bootstrap 5 -->
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- FontAwesome -->
+
+    <!-- Google Font Lato -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- /Google Font Lato -->
+
+    <!-- il mio foglio di stile -->
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- /il mio foglio di stile -->
+
+
+    <!-- Libreria Luxon -->
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
+    <!-- Libreria Luxon -->
+
+    <!-- Vue.js -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- /Vue.js -->
+</head>
+
+<body>
+    <main id="app" v-cloak>
+        <!-- Sezione menu -->
+        <div id="menu">
+            <header>
+                <!-- Elemento Persona -->
+                <div class="element">
+                    <img :src="user.avatar" :alt="`${user.name} avatar`" class="d-none d-sm-block">
+                    <h5 class="mb-0 me-auto">{{user.name}}</h5>
+                    <i class="fa-solid fa-circle-notch d-none d-lg-block"></i>
+                    <i class="fa-solid fa-message d-none d-lg-block"></i>
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div>
+                <!-- /Elemento Persona -->
+                <!-- Alert -->
+                <div id="alert" class="d-none d-lg-flex">
+                    <i class="fa-solid fa-bell-slash"></i>
+                    <div>
+                        <p class="m-0">Ricevi notifiche di nuovi messaggi</p>
+                        <a href="#">Attiva notifiche desktop</a>
+                    </div>
+                </div>
+                <!-- Alert -->
+                <!-- Input di ricerca -->
+                <div id="search_container">
+                    <div class="input-group">
+                        <i id="search" class="fa-solid fa-magnifying-glass input-group-text"></i>
+                        <input v-model="keyWord" @keyup="filterContacts" type="text" class="form-control"
+                            placeholder="Cerca o inizia una nuova chat" aria-describedby="search">
+                    </div>
+                </div>
+                <!-- /Input di ricerca -->
+            </header>
+            <!-- Lista  contatti -->
+            <ul>
+                <!-- Elemento Persona -->
+                <li class="element" v-for="(contact, index) in filterContacts()" role="button"
+                    :class="{ 'active': index === activeContact }" @click="changeActiveContact(index)">
+                    <img :src="contact.avatar" alt="`${contact.name} avatar`" class="my-auto d-none d-md-block">
+                    <div class="me-auto">
+                        <h5 class="mb-0">{{contact.name}}</h5>
+                        <h6 class="mb-0 fw-light overflow-hidden d-none d-sm-block" v-if="getLastMessage()">
+                            {{ getLastMessage(contact).message }}
+                        </h6>
+                    </div>
+                    <span class="fw-light ms-2 d-none d-lg-block" v-if="getLastMessage()">
+                        {{ getLastMessage(contact).time }}
+                    </span>
+                </li>
+                <!-- /Elemento Persona -->
+            </ul>
+            <!-- /Lista  contatti -->
+        </div>
+        <!-- /Sezione menu -->
+        <!-- Sezione Chat -->
+        <div id="chat">
+            <!-- /Elemento Persona -->
+            <div class="element justify-content-end">
+                <img v-if="filterContacts()[activeContact]" :src="filterContacts()[activeContact].avatar"
+                    :alt="`${filterContacts()[activeContact].name} avatar`" class="d-none d-sm-block">
+                <div class="me-auto" v-if="filterContacts()[activeContact]?.name || getLastMessageReceivedTime()">
+                    <h5 class="mb-1">{{ filterContacts()[activeContact]?.name }}</h5>
+                    <h6 class="mb-0 fw-light" v-if="getLastMessageReceivedTime()">
+                        Ultimo messaggio alle: {{ getLastMessageReceivedTime() }}
+                    </h6>
+                </div>
+                <i class="fa-solid fa-magnifying-glass d-none d-md-block"></i>
+                <i class="fa-solid fa-paperclip d-none d-md-block"></i>
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+            </div>
+            <!-- /Elemento Persona -->
+            <!-- Messaggi -->
+            <ul id="messages" class="list-unstyled m-0">
+                <li v-for="(message, index) in filterContacts()[activeContact]?.messages"
+                    :class="{ 'sent': filterContacts()[activeContact].messages[index].status === 'sent', 'received': filterContacts()[activeContact].messages[index].status !== 'sent'}">
+                    <p class="m-0">{{message.message}}</p>
+                    <span class="m-0 fw-light">{{formatMessageDate(message.date)}}</span>
+                    <div class="ms_dropdown dropdown">
+                        <button type="button" class="btn btn-sm dropdown-toggle-split border-0"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <ul class="dropdown-menu p-0 overflow-hidden">
+                            <li class="dropdown-item ms_info" type="button">Info Messaggio</li>
+                            <li class="dropdown-item ms_delete" type="button"
+                                @click="deleteMessage(activeContact, index)">
+                                Cancella Messaggio</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+            <!-- /Messaggi -->
+            <!-- Input Nuovo Messaggio -->
+            <footer>
+                <i class="fa-regular fa-face-smile"></i>
+                <input type="text" placeholder="Scrivi un messaggio" v-model="newMessage" @keyup.enter="addMessage">
+                <i v-if="newMessage.length > 0" @click="addMessage" class="fa-solid fa-paper-plane" id="plane"></i>
+                <i v-else class="fa-solid fa-microphone" id="mic"></i>
+            </footer>
+            <!-- /Input Nuovo Messaggio -->
+        </div>
+        <!-- /Sezione Chat -->
+    </main>
+    <!-- Script di Bootstrap 5-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <!-- /Script di Bootstrap 5-->
+    <!-- il mio script -->
+    <script src="js/main.js"></script>
+    <!-- il mio script -->
+</body>
+
+</html>
