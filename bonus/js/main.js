@@ -269,7 +269,7 @@ const myApp = createApp({
             if (this.activeContact === undefined) {
                 contact.status = newStatus;
             } else {
-                this.user.contacts[this.activeContact].status = newStatus;
+                this.user.contacts[contact].status = newStatus;
             }
         },
 
@@ -298,17 +298,17 @@ const myApp = createApp({
 
                 // Dopo 1 secondo cambia lo stato del contatto
                 setTimeout(() => {
-                    this.updateStatus('Online');
+                    this.updateStatus('Online', contactIndex);
                     // Dopo 1 secondo cambia lo stato del contatto
                     setTimeout(() => {
-                        this.updateStatus('Sta scrivendo...');
+                        this.updateStatus('Sta scrivendo...', contactIndex);
                         // Dopo 3 secondi simula una risposta e cambia lo stato del contatto
                         setTimeout(() => {
-                            this.updateStatus('Online');
+                            this.updateStatus('Online', contactIndex);
                             this.simulateResponse(contactIndex);
                             // Dopo 1 secondo cambia lo stato del contatto
                             setTimeout(() => {
-                                this.updateStatus(`Ultimo accesso alle ${now.toFormat('HH:mm')}`);
+                                this.updateStatus(`Ultimo accesso alle ${now.toFormat('HH:mm')}`, contactIndex);
                             }, 1000);
                         }, 3000);
                     }, 1000);
