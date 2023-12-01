@@ -198,12 +198,13 @@ const myApp = createApp({
         };
     },
 
-    /*     mounted() {
-            this.user.contacts.forEach((contact, index) => {
-                const lastMessageReceivedTime = this.getLastMessageReceivedTime(index);
-                this.updateStatus(`Ultimo accesso alle ${lastMessageReceivedTime}`);
-            });
-        }, */
+    // created() {
+    //     this.user.contacts.forEach((contact) => {
+    //         console.log(contact)
+    //         const lastMessageReceivedTime = this.getLastMessageReceivedTime(contact);
+    //         this.updateStatus(`Ultimo accesso alle ${lastMessageReceivedTime}`);
+    //     });
+    // },
 
     methods: {
         // Restituisce il testo troncato e la data formattata dell'ultimo messaggio nella chat di un contatto, 
@@ -221,31 +222,20 @@ const myApp = createApp({
             return { time: '', message: '' };
         },
 
-        // Ottiene l'orario dell'ultimo messaggio ricevuto
-        getLastMessageReceivedTime() {
-            if (this.activeContact !== undefined) {
-                const receivedMessages = this.filterContacts()[this.activeContact].messages
-                    .filter(message => message.status === 'received');
+        // // Ottiene l'orario dell'ultimo messaggio ricevuto
+        // getLastMessageReceivedTime(contact) {
+        //     console.log(contact);
+        //     if (contact === undefined) {
+        //         return '';
+        //     }
+        //     const receivedMessages = contact.messages.filter(message => message.status === 'received');
+        //     const lastReceivedMessage = receivedMessages.slice(-1)[0];
 
-                const lastReceivedMessage = receivedMessages.slice(-1)[0];
-
-                if (lastReceivedMessage) {
-                    const luxonDate = DateTime.fromFormat(lastReceivedMessage.date, 'dd/MM/yyyy HH:mm:ss');
-                    return luxonDate.toFormat('HH:mm');
-                }
-            }
-            return '';
-        },
-        /*         getLastMessageReceivedTime(index) {
-                    const receivedMessages = this.user.contacts[index].messages.filter(message => message.status === 'received');
-                    const lastReceivedMessage = receivedMessages.slice(-1)[0];
-        
-                    if (lastReceivedMessage) {
-                        const luxonDate = DateTime.fromFormat(lastReceivedMessage.date, 'dd/MM/yyyy HH:mm:ss');
-                        return luxonDate.toFormat('HH:mm');
-                    }
-                }, */
-
+        //     if (lastReceivedMessage) {
+        //         const luxonDate = DateTime.fromFormat(lastReceivedMessage.date, 'dd/MM/yyyy HH:mm:ss');
+        //         return luxonDate.toFormat('HH:mm');
+        //     }
+        // },
 
         // Filtra i contatti in base alla parola chiave inserita nell'input di ricerca
         filterContacts() {

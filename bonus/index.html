@@ -96,9 +96,11 @@
             <div class="element justify-content-end">
                 <img v-if="filterContacts()[activeContact]" :src="filterContacts()[activeContact].avatar"
                     :alt="`${filterContacts()[activeContact].name} avatar`" class="d-none d-sm-block">
-                <div class="me-auto" v-if="filterContacts()[activeContact]?.name || getLastMessageReceivedTime()">
-                    <h5 class="mb-1">{{ filterContacts()[activeContact]?.name }}</h5>
-                    <h6 class="mb-0 fw-light" v-if="getLastMessageReceivedTime()">
+                <div class="me-auto">
+                    <h5 class="mb-1" v-if="filterContacts()[activeContact]?.name">
+                        {{ filterContacts()[activeContact]?.name }}
+                    </h5>
+                    <h6 class="mb-0 fw-light" v-if="filterContacts()[activeContact]?.status">
                         {{ filterContacts()[activeContact]?.status }}
                     </h6>
                 </div>
