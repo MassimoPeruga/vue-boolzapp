@@ -51,8 +51,12 @@
     font-size: .75rem;
 }
 
-.ms_dropdown li:active {
+.ms_dropdown li.ms_info:active {
     background-color: #009688;
+}
+
+.ms_dropdown li.ms_delete:active {
+    background-color: #ff6977;
 }
 
 .ms_dropdown li:focus-visible {
@@ -83,6 +87,7 @@
     height: 100%;
     border-radius: 5px;
     border: none;
+    padding: 0 15px;
 }
 
 #chat footer input:focus-visible {
