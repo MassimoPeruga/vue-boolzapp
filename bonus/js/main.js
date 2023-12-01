@@ -11,6 +11,13 @@ const myApp = createApp({
             activeContact: undefined, // Indice del contatto attualmente attivo
             newMessage: '', // Input per i nuovi Messaggi
             keyWord: '', // Parola chiave per la ricerca dei contatti
+            // Risposte del computer
+            quotes: [
+                "👍", "👀", "😂", "😒", "😢", "♥", "🙏", "😍", "🤨", "🙄",
+                "😯", "😴", "😓", "😕", "🙃", "😶", "😤", "🤯", "🤪", "🥴",
+                "😱", "😡", "💀", "👽", "💩", "💪", "🤏", "🤙", "💅", "👋",
+                "🃏", "🚨", "🎁", "🤡", "🎄", "🤷‍♂️", "⁉", "OwO", ";-)", "ᓚᘏᗢ",
+            ],
             // Dati dell'utente
             user: {
                 name: 'Sofia',
@@ -240,12 +247,19 @@ const myApp = createApp({
             return luxonDate.toFormat('HH:mm');
         },
 
+        // Seleziona randomicamente un messaggio nell'array di risposte
+        getRandomQuote() {
+            const randomQuote = Math.floor(Math.random() * this.quotes.length);
+            return this.quotes[randomQuote];
+        },
+
         // Simula una risposta al messaggio
         simulateResponse(contactIndex) {
             const now = DateTime.local();
+            const randomQuote = this.getRandomQuote();
             this.user.contacts[contactIndex].messages.push({
                 date: now.toFormat('dd/MM/yyyy HH:mm:ss'),
-                message: 'Ok.',
+                message: randomQuote,
                 status: 'received'
             });
         },

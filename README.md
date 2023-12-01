@@ -33,4 +33,5 @@ Cancella messaggio: cliccando sul messaggio appare un menu a tendina che permett
 ## Bonus:
 
 1. L'utente non può inviare un messaggio vuoto o composto solamente da spazi;
-2. L'icona in basso a destra (a fianco all'input per scrivere un nuovo messaggio) cambia finché l'utente sta scrivendo: di default si visualizza l'icona del microfono, quando l'input non è vuoto si visualizza l'icona dell'aeroplano. Quando il messaggio è stato inviato e l'input si svuota, si torna a visualizzare il microfono. Il messaggio quindi può anche essere inviato cliccando sull'icona dell'aeroplano.
+2. L'icona in basso a destra (a fianco all'input per scrivere un nuovo messaggio) cambia finché l'utente sta scrivendo: di default si visualizza l'icona del microfono, quando l'input non è vuoto si visualizza l'icona dell'aeroplano. Quando il messaggio è stato inviato e l'input si svuota, si torna a visualizzare il microfono. Il messaggio quindi può anche essere inviato cliccando sull'icona dell'aeroplano;
+3. Viene predisposta una lista di emoji da utilizzare al posto della risposta "ok:" quando il pc risponde, anziché scrivere "ok", scegliere un'emoji random dalla lista e la utilizza come testo del messaggio di risposta del pc.

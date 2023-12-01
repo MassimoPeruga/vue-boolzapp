@@ -63,13 +63,19 @@
     outline: none;
 }
 
+#messages p {
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+}
+
 #messages span {
     font-size: .75rem;
     text-align: end;
 }
 
 #chat footer {
-    height: 70px;
+    min-height: 70px;
+    max-height: 70px;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
