@@ -198,17 +198,15 @@ const myApp = createApp({
         };
     },
 
-    created() {
+    created() {  // Imposta lo stato di tutti i contatti in base al loro ultimo messaggio
         this.user.contacts.forEach((contact) => {
             const lastMessageReceivedTime = this.getLastMessageReceivedTime(contact);
-            console.log(contact.status);
             this.updateStatus(`Ultimo accesso alle ${lastMessageReceivedTime}`, contact);
-            console.log(contact.status);
         });
     },
 
     methods: {
-        // Restituisce il testo troncato e la data formattata dell'ultimo messaggio nella chat di un contatto, 
+        // Restituisce il testo troncato e la data formattata dell'ultimo messaggio nella chat di un contatto
         getLastMessage(contact) {
             if (contact && contact.messages && contact.messages.length > 0) {
                 const lastMessage = contact.messages[contact.messages.length - 1];
@@ -322,8 +320,19 @@ const myApp = createApp({
 
         // Cancella un messaggio contenuto nella chat con il contatto
         deleteMessage(contactIndex, messageIndex) {
-            if (this.user.contacts[contactIndex] && this.user.contacts[contactIndex].messages[messageIndex]) {
-                this.user.contacts[contactIndex].messages.splice(messageIndex, 1);
+            if (this.filterContacts()[contactIndex] && this.filterContacts()[contactIndex].messages[messageIndex]) {
+                this.filterContacts()[contactIndex].messages.splice(messageIndex, 1);
+            }
+        },
+
+        // Svuota tutto l'array di messaggi del contatto attivo 
+        deleteAllMessages() {
+            const activeContact = this.activeContact;
+            if (activeContact !== undefined && this.filterContacts()[activeContact]) {
+                const messages = this.filterContacts()[activeContact].messages;
+                while (messages.length > 0) {
+                    this.deleteMessage(activeContact, 0);
+                }
             }
         },
 

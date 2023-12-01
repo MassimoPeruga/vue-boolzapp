@@ -36,6 +36,7 @@
     border-radius: 10px;
 }
 
+.ms_dropstart button,
 .ms_dropdown button {
     padding: 0;
     display: flex;
@@ -51,14 +52,17 @@
     font-size: .75rem;
 }
 
+.ms_dropstart i.ms_info:active,
 .ms_dropdown li.ms_info:active {
     background-color: #009688;
 }
 
+.ms_dropstart li.ms_delete:active,
 .ms_dropdown li.ms_delete:active {
     background-color: #ff6977;
 }
 
+.ms_dropstart li:focus-visible,
 .ms_dropdown li:focus-visible {
     outline: none;
 }

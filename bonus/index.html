@@ -106,7 +106,21 @@
                 </div>
                 <i class="fa-solid fa-magnifying-glass d-none d-md-block"></i>
                 <i class="fa-solid fa-paperclip d-none d-md-block"></i>
-                <i class="fa-solid fa-ellipsis-vertical"></i>
+                <!-- Example split danger button -->
+                <div class="btn-group dropstart ms_dropstart">
+                    <button type="button" class="btn dropdown-toggle-split border-0" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </button>
+                    <ul class="dropdown-menu p-0 overflow-hidden">
+                        <li class="dropdown-item ms_delete" type="button" @click="deleteAllMessages">
+                            Cancella tutti i messaggi
+                        </li>
+                        <li class="dropdown-item ms_delete" type="button" @click="">
+                            Cancella questa chat
+                        </li>
+                    </ul>
+                </div>
             </div>
             <!-- /Elemento Persona -->
             <!-- Messaggi -->
