@@ -336,5 +336,18 @@ const myApp = createApp({
             }
         },
 
+        deleteContact() {
+            const activeContact = this.activeContact;
+            if (activeContact !== undefined && this.filterContacts()[activeContact]) {
+                const contactToDelete = this.filterContacts()[activeContact];
+                const indexInContacts = this.user.contacts.indexOf(contactToDelete);
+                if (indexInContacts !== -1) {
+                    this.user.contacts.splice(indexInContacts, 1);
+                    // Resetta l'indice del contatto attivo
+                    this.activeContact = undefined;
+                }
+            }
+        },
+
     },
 }).mount('#app');
