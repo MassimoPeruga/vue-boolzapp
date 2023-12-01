@@ -99,7 +99,7 @@
                 <div class="me-auto" v-if="filterContacts()[activeContact]?.name || getLastMessageReceivedTime()">
                     <h5 class="mb-1">{{ filterContacts()[activeContact]?.name }}</h5>
                     <h6 class="mb-0 fw-light" v-if="getLastMessageReceivedTime()">
-                        Ultimo messaggio alle: {{ getLastMessageReceivedTime() }}
+                        {{ filterContacts()[activeContact]?.status }}
                     </h6>
                 </div>
                 <i class="fa-solid fa-magnifying-glass d-none d-md-block"></i>

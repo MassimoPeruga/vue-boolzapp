@@ -28,6 +28,7 @@ const myApp = createApp({
                         name: 'Michele',
                         avatar: 'img/avatar_1.jpg',
                         visible: true,
+                        status: '',
                         messages: [
                             {
                                 date: '10/01/2020 15:30:55',
@@ -50,6 +51,7 @@ const myApp = createApp({
                         name: 'Fabio',
                         avatar: 'img/avatar_2.jpg',
                         visible: true,
+                        status: '',
                         messages: [
                             {
                                 date: '20/03/2020 16:30:00',
@@ -72,6 +74,7 @@ const myApp = createApp({
                         name: 'Samuele',
                         avatar: 'img/avatar_3.jpg',
                         visible: true,
+                        status: '',
                         messages: [
                             {
                                 date: '28/03/2020 10:10:40',
@@ -94,6 +97,7 @@ const myApp = createApp({
                         name: 'Alessandro B.',
                         avatar: 'img/avatar_4.jpg',
                         visible: true,
+                        status: '',
                         messages: [
                             {
                                 date: '10/01/2020 15:30:55',
@@ -110,6 +114,7 @@ const myApp = createApp({
                     {
                         name: 'Alessandro L.',
                         avatar: 'img/avatar_5.jpg',
+                        status: '',
                         visible: true,
                         messages: [
                             {
@@ -128,6 +133,7 @@ const myApp = createApp({
                         name: 'Claudia',
                         avatar: 'img/avatar_6.jpg',
                         visible: true,
+                        status: '',
                         messages: [
                             {
                                 date: '10/01/2020 15:30:55',
@@ -150,6 +156,7 @@ const myApp = createApp({
                         name: 'Federico',
                         avatar: 'img/avatar_7.jpg',
                         visible: true,
+                        status: '',
                         messages: [
                             {
                                 date: '10/01/2020 15:30:55',
@@ -167,6 +174,7 @@ const myApp = createApp({
                         name: 'Davide',
                         avatar: 'img/avatar_8.jpg',
                         visible: true,
+                        status: '',
                         messages: [
                             {
                                 date: '10/01/2020 15:30:55',
@@ -189,6 +197,14 @@ const myApp = createApp({
             },
         };
     },
+
+    /*     mounted() {
+            this.user.contacts.forEach((contact, index) => {
+                const lastMessageReceivedTime = this.getLastMessageReceivedTime(index);
+                this.updateStatus(`Ultimo accesso alle ${lastMessageReceivedTime}`);
+            });
+        }, */
+
     methods: {
         // Restituisce il testo troncato e la data formattata dell'ultimo messaggio nella chat di un contatto, 
         getLastMessage(contact) {
@@ -220,6 +236,16 @@ const myApp = createApp({
             }
             return '';
         },
+        /*         getLastMessageReceivedTime(index) {
+                    const receivedMessages = this.user.contacts[index].messages.filter(message => message.status === 'received');
+                    const lastReceivedMessage = receivedMessages.slice(-1)[0];
+        
+                    if (lastReceivedMessage) {
+                        const luxonDate = DateTime.fromFormat(lastReceivedMessage.date, 'dd/MM/yyyy HH:mm:ss');
+                        return luxonDate.toFormat('HH:mm');
+                    }
+                }, */
+
 
         // Filtra i contatti in base alla parola chiave inserita nell'input di ricerca
         filterContacts() {
@@ -253,6 +279,13 @@ const myApp = createApp({
             return this.quotes[randomQuote];
         },
 
+        // Aggiorna lo stato del contatto
+        updateStatus(newStatus) {
+            if (this.activeContact !== undefined) {
+                this.user.contacts[this.activeContact].status = newStatus;
+            }
+        },
+
         // Simula una risposta al messaggio
         simulateResponse(contactIndex) {
             const now = DateTime.local();
@@ -275,10 +308,25 @@ const myApp = createApp({
                     message: this.newMessage,
                     status: 'sent',
                 });
-                // Simula una risposta dopo 3 secondi
+
+                // Dopo 1 secondo cambia lo stato del contatto
                 setTimeout(() => {
-                    this.simulateResponse(contactIndex);
-                }, 3000);
+                    this.updateStatus('Online');
+                    // Dopo 1 secondo cambia lo stato del contatto
+                    setTimeout(() => {
+                        this.updateStatus('Sta scrivendo...');
+                        // Dopo 3 secondi simula una risposta e cambia lo stato del contatto
+                        setTimeout(() => {
+                            this.updateStatus('Online');
+                            this.simulateResponse(contactIndex);
+                            // Dopo 1 secondo cambia lo stato del contatto
+                            setTimeout(() => {
+                                this.updateStatus(`Ultimo accesso alle ${now.toFormat('HH:mm')}`);
+                            }, 1000);
+                        }, 3000);
+                    }, 1000);
+                }, 1000);
+
             }
             this.newMessage = '';
         },
