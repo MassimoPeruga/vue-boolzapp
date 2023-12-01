@@ -198,13 +198,14 @@ const myApp = createApp({
         };
     },
 
-    // created() {
-    //     this.user.contacts.forEach((contact) => {
-    //         console.log(contact)
-    //         const lastMessageReceivedTime = this.getLastMessageReceivedTime(contact);
-    //         this.updateStatus(`Ultimo accesso alle ${lastMessageReceivedTime}`);
-    //     });
-    // },
+    created() {
+        this.user.contacts.forEach((contact) => {
+            const lastMessageReceivedTime = this.getLastMessageReceivedTime(contact);
+            console.log(contact.status);
+            this.updateStatus(`Ultimo accesso alle ${lastMessageReceivedTime}`, contact);
+            console.log(contact.status);
+        });
+    },
 
     methods: {
         // Restituisce il testo troncato e la data formattata dell'ultimo messaggio nella chat di un contatto, 
@@ -223,19 +224,15 @@ const myApp = createApp({
         },
 
         // // Ottiene l'orario dell'ultimo messaggio ricevuto
-        // getLastMessageReceivedTime(contact) {
-        //     console.log(contact);
-        //     if (contact === undefined) {
-        //         return '';
-        //     }
-        //     const receivedMessages = contact.messages.filter(message => message.status === 'received');
-        //     const lastReceivedMessage = receivedMessages.slice(-1)[0];
+        getLastMessageReceivedTime(contact) {
+            const receivedMessages = contact.messages.filter(message => message.status === 'received');
+            const lastReceivedMessage = receivedMessages.slice(-1)[0];
 
-        //     if (lastReceivedMessage) {
-        //         const luxonDate = DateTime.fromFormat(lastReceivedMessage.date, 'dd/MM/yyyy HH:mm:ss');
-        //         return luxonDate.toFormat('HH:mm');
-        //     }
-        // },
+            if (lastReceivedMessage) {
+                const luxonDate = DateTime.fromFormat(lastReceivedMessage.date, 'dd/MM/yyyy HH:mm:ss');
+                return luxonDate.toFormat('HH:mm');
+            }
+        },
 
         // Filtra i contatti in base alla parola chiave inserita nell'input di ricerca
         filterContacts() {
@@ -270,8 +267,10 @@ const myApp = createApp({
         },
 
         // Aggiorna lo stato del contatto
-        updateStatus(newStatus) {
-            if (this.activeContact !== undefined) {
+        updateStatus(newStatus, contact) {
+            if (this.activeContact === undefined) {
+                contact.status = newStatus;
+            } else {
                 this.user.contacts[this.activeContact].status = newStatus;
             }
         },
