@@ -10,6 +10,8 @@ const myApp = createApp({
         return {
             activeContact: undefined, // Indice del contatto attualmente attivo
             newMessage: '', // Input per i nuovi Messaggi
+            newContactName: '',
+            newContactsCount: 0,
             keyWord: '', // Parola chiave per la ricerca dei contatti
             // Risposte del computer
             quotes: [
@@ -266,11 +268,7 @@ const myApp = createApp({
 
         // Aggiorna lo stato del contatto
         updateStatus(newStatus, contact) {
-            if (this.activeContact === undefined) {
-                contact.status = newStatus;
-            } else {
-                this.user.contacts[contact].status = newStatus;
-            }
+            contact.status = newStatus;
         },
 
         // Simula una risposta al messaggio
@@ -282,37 +280,59 @@ const myApp = createApp({
                 message: randomQuote,
                 status: 'received'
             });
+            // Dopo aver aggiunto il messaggio, esegui lo scroll fino al fondo della sezione chat
+            this.$nextTick(() => {
+                const chatElement = document.getElementById('messages');
+                if (chatElement) {
+                    chatElement.scrollTop = chatElement.scrollHeight;
+                }
+            });
         },
 
         // Aggiunge un nuovo messaggio contenente al testo digitato nell'input della chat con il contatto
         addMessage() {
             if (this.newMessage.trim() !== '' && this.activeContact !== undefined) {
                 const contactIndex = this.user.contacts.indexOf(this.filterContacts()[this.activeContact]);
-                const now = DateTime.local();
+                const contact = this.user.contacts[contactIndex];
 
-                this.user.contacts[contactIndex].messages.push({
-                    date: now.toFormat('dd/MM/yyyy HH:mm:ss'),
+                contact.messages.push({
+                    date: DateTime.local().toFormat('dd/MM/yyyy HH:mm:ss'),
                     message: this.newMessage,
                     status: 'sent',
                 });
 
-                // Dopo 1 secondo cambia lo stato del contatto
-                setTimeout(() => {
-                    this.updateStatus('Online', contactIndex);
-                    // Dopo 1 secondo cambia lo stato del contatto
-                    setTimeout(() => {
-                        this.updateStatus('Sta scrivendo...', contactIndex);
-                        // Dopo 3 secondi simula una risposta e cambia lo stato del contatto
+                // Dopo aver aggiunto il messaggio, esegui lo scroll fino al fondo della sezione chat
+                this.$nextTick(() => {
+                    const chatElement = document.getElementById('messages');
+                    if (chatElement) {
+                        chatElement.scrollTop = chatElement.scrollHeight;
+                    }
+                });
+
+                // Resetta il timeout per "sta scrivendo"
+                clearTimeout(contact.typingTimeout);
+
+                // Dopo 1 secondo, lo stato diventa "Online"
+                this.updateStatus('Online', contact);
+
+                // Dopo 2 secondi, lo stato diventa "Sta scrivendo..."
+                contact.typingTimeout = setTimeout(() => {
+                    this.updateStatus('Sta scrivendo...', contact);
+
+                    // Resetta il timeout per la risposta automatica
+                    clearTimeout(contact.responseTimeout);
+
+                    // Simula una risposta e imposta un nuovo timeout
+                    contact.responseTimeout = setTimeout(() => {
+                        this.updateStatus('Online', contact);
+                        this.simulateResponse(contactIndex);
+
+                        // Dopo 2 secondi cambia lo stato del contatto
                         setTimeout(() => {
-                            this.updateStatus('Online', contactIndex);
-                            this.simulateResponse(contactIndex);
-                            // Dopo 1 secondo cambia lo stato del contatto
-                            setTimeout(() => {
-                                this.updateStatus(`Ultimo accesso alle ${now.toFormat('HH:mm')}`, contactIndex);
-                            }, 1000);
-                        }, 3000);
-                    }, 1000);
-                }, 1000);
+                            this.updateStatus(`Ultimo accesso alle ${DateTime.local().toFormat('HH:mm')}`, contact);
+                        }, 2000);
+                    }, 3000);
+                }, 2000);
 
             }
             this.newMessage = '';
@@ -346,6 +366,25 @@ const myApp = createApp({
                     // Resetta l'indice del contatto attivo
                     this.activeContact = undefined;
                 }
+            }
+        },
+
+        // Aggiungi un nuovo contatto
+        addNewContact() {
+            // Verifica se il nome del nuovo contatto non è vuoto
+            if (this.newContactName.trim() !== '') {
+                this.newContactsCount++
+                // Aggiungi il nuovo contatto all'array
+                this.user.contacts.unshift({
+                    name: this.newContactName,
+                    avatar: `https://picsum.photos/500/500?random=${this.newContactsCount}`, // Avatar predefinito casuale
+                    visible: true,
+                    status: '',
+                    messages: [],
+                });
+
+                // Resetta il nome del nuovo contatto
+                this.newContactName = '';
             }
         },
 

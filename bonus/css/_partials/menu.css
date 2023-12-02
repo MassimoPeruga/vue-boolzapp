@@ -83,3 +83,7 @@
 #menu ul .element:hover {
     background-color: #e9ebeb;
 }
+
+.ms_modal>*>* {
+    background-color: #dcdbd3;
+}

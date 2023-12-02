@@ -46,7 +46,33 @@
                     <img :src="user.avatar" :alt="`${user.name} avatar`" class="d-none d-sm-block">
                     <h5 class="mb-0 me-auto">{{user.name}}</h5>
                     <i class="fa-solid fa-circle-notch d-none d-lg-block"></i>
-                    <i class="fa-solid fa-message d-none d-lg-block"></i>
+
+                    <!-- Button trigger modal -->
+                    <i class="fa-solid fa-message d-none d-lg-block" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal"></i>
+                    <!-- Modal -->
+                    <div class="modal fade ms_modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header border-0">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Inserisci un nome per iniziare
+                                        una nuova chat</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="text" v-model="newContactName" class="w-100 rounded-2 border-0">
+                                </div>
+                                <div class="modal-footer border-0">
+                                    <button type="button" class="btn ms_info" @click="addNewContact"
+                                        data-bs-dismiss="modal">Inizia</button>
+                                    <button type="button" class="btn ms_delete" data-bs-dismiss="modal">Annulla</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /Modal -->
                     <i class="fa-solid fa-ellipsis-vertical"></i>
                 </div>
                 <!-- /Elemento Persona -->
@@ -64,7 +90,7 @@
                     <div class="input-group">
                         <i id="search" class="fa-solid fa-magnifying-glass input-group-text"></i>
                         <input v-model="keyWord" @keyup="filterContacts" type="text" class="form-control"
-                            placeholder="Cerca o inizia una nuova chat" aria-describedby="search">
+                            placeholder="Cerca una chat" aria-describedby="search">
                     </div>
                 </div>
                 <!-- /Input di ricerca -->

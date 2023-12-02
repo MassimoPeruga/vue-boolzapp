@@ -52,11 +52,15 @@
     font-size: .75rem;
 }
 
+.ms_modal .ms_info,
+.ms_modal .ms_info:active,
 .ms_dropstart i.ms_info:active,
 .ms_dropdown li.ms_info:active {
     background-color: #009688;
 }
 
+.ms_modal .ms_delete,
+.ms_modal .ms_delete:active,
 .ms_dropstart li.ms_delete:active,
 .ms_dropdown li.ms_delete:active {
     background-color: #ff6977;
@@ -108,8 +112,9 @@
     padding: 0 15px;
 }
 
+.ms_modal input:focus-visible,
 #chat footer input:focus-visible {
-    outline: 1px solid #00968880;
+    outline: 2px solid #00968880;
 }
 
 /* Messaggio rivevuto/inviato */
