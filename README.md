@@ -41,3 +41,4 @@ Cancella messaggio: cliccando sul messaggio appare un menu a tendina che permett
 7. Aggiunta dello scroll in giù in automatico fino al messaggio più recente quando viene aggiunto un nuovo messaggio alla conversazione;
 8. Viene visualizzato un messaggio di benvenuto che invita l'utente a selezionare un chat dalla lista per visualizzare i suoi messaggi;
 9. Viene visualizzata una splash page visibile per 1s all'apertura dell'app.
+10. Su mobile e tablet di default si visualizza solo la lista dei contatti e cliccando su un contatto si vedono i messaggi di quel contatto. Viene quindi aggiunta un'icona con una freccia verso sinistra per tornare indietro, dalla visualizzazione della chat alla visualizzazione di tutti i contatti

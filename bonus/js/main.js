@@ -8,7 +8,8 @@ const { createApp } = Vue;
 const myApp = createApp({
     data() {
         return {
-            splashPage: true,
+            splashPage: true, // Variabile per mostrare la splash page
+            showChat: false, // Variabile per passare dalla visualizzazione dei contatti a quella della chat
             activeContact: undefined, // Indice del contatto attualmente attivo
             newMessage: '', // Input per i nuovi Messaggi
             newContactName: '', // Input per i nuovi Contatti
@@ -216,6 +217,11 @@ const myApp = createApp({
     },
 
     methods: {
+        // Mostra la sezione chat
+        toggleChatView() {
+            this.showChat = !this.showChat;
+        },
+
         // Restituisce il testo troncato e la data formattata dell'ultimo messaggio nella chat di un contatto
         getLastMessage(contact) {
             if (contact && contact.messages && contact.messages.length > 0) {

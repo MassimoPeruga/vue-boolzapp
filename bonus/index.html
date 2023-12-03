@@ -46,17 +46,16 @@
         <!-- /Splah page -->
         <div id="ms_app" v-else>
             <!-- Sezione menu -->
-            <div id="menu">
+            <div id="menu" :class="{ 'd-none': showChat }">
                 <header>
                     <!-- Elemento Persona -->
                     <div class="element">
-                        <img :src="user.avatar" :alt="`${user.name} avatar`" class="d-none d-sm-block">
+                        <img :src="user.avatar" :alt="`${user.name} avatar`">
                         <h5 class="mb-0 me-auto">{{user.name}}</h5>
-                        <i class="fa-solid fa-circle-notch d-none d-lg-block"></i>
+                        <i class="fa-solid fa-circle-notch"></i>
 
                         <!-- Button trigger modal -->
-                        <i class="fa-solid fa-message d-none d-lg-block" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal"></i>
+                        <i class="fa-solid fa-message" data-bs-toggle="modal" data-bs-target="#exampleModal"></i>
                         <!-- Modal -->
                         <div class="modal fade ms_modal" id="exampleModal" tabindex="-1"
                             aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -108,15 +107,16 @@
                 <ul>
                     <!-- Elemento Persona -->
                     <li class="element" v-for="(contact, index) in filterContacts()" role="button"
-                        :class="{ 'active': index === activeContact }" @click="changeActiveContact(index)">
-                        <img :src="contact.avatar" alt="`${contact.name} avatar`" class="my-auto d-none d-md-block">
+                        :class="{ 'active': index === activeContact }"
+                        @click="changeActiveContact(index), toggleChatView()">
+                        <img :src="contact.avatar" alt="`${contact.name} avatar`" class="my-auto">
                         <div class="me-auto">
                             <h5 class="mb-0">{{contact.name}}</h5>
-                            <h6 class="mb-0 fw-light overflow-hidden d-none d-sm-block" v-if="getLastMessage()">
+                            <h6 class="mb-0 fw-light overflow-hidden" v-if="getLastMessage()">
                                 {{ getLastMessage(contact).message }}
                             </h6>
                         </div>
-                        <span class="fw-light ms-2 d-none d-lg-block" v-if="getLastMessage()">
+                        <span class="fw-light ms-2" v-if="getLastMessage()">
                             {{ getLastMessage(contact).time }}
                         </span>
                     </li>
@@ -126,16 +126,16 @@
             </div>
             <!-- /Sezione menu -->
             <!-- Sezione Chat -->
-            <div class="flex-grow-1">
-                <div id="welcome" v-if="this.activeContact === undefined">
+            <div id="chat" class="flex-grow-1" :class="{ 'd-none': !showChat }">
+                <div id="welcome" class=" text-center" v-if="this.activeContact === undefined">
                     <h2 class="fw-bold">Benvenuto su Boolzapp!</h2>
                     <h3 class="fw-bold">Seleziona una Chat per iniziare a messaggiare.</h3>
                 </div>
-                <div id="chat" v-else>
+                <div id="messages_container" v-else>
                     <!-- /Elemento Persona -->
                     <div class="element justify-content-end">
                         <img v-if="filterContacts()[activeContact]" :src="filterContacts()[activeContact].avatar"
-                            :alt="`${filterContacts()[activeContact].name} avatar`" class="d-none d-sm-block">
+                            :alt="`${filterContacts()[activeContact].name} avatar`">
                         <div class="me-auto">
                             <h5 class="mb-1" v-if="filterContacts()[activeContact]?.name">
                                 {{ filterContacts()[activeContact]?.name }}
@@ -144,9 +144,8 @@
                                 {{ filterContacts()[activeContact]?.status }}
                             </h6>
                         </div>
-                        <i class="fa-solid fa-magnifying-glass d-none d-md-block"></i>
-                        <i class="fa-solid fa-paperclip d-none d-md-block"></i>
-                        <!-- Example split danger button -->
+                        <i v-if="showChat" @click="toggleChatView" id="back-icon" class="fa-solid fa-arrow-left"></i>
+                        <i class="fa-solid fa-magnifying-glass"></i>
                         <div class="btn-group dropstart ms_dropstart">
                             <button type="button" class="btn dropdown-toggle-split border-0" data-bs-toggle="dropdown"
                                 aria-expanded="false">
