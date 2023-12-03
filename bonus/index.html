@@ -117,67 +117,73 @@
         </div>
         <!-- /Sezione menu -->
         <!-- Sezione Chat -->
-        <div id="chat">
-            <!-- /Elemento Persona -->
-            <div class="element justify-content-end">
-                <img v-if="filterContacts()[activeContact]" :src="filterContacts()[activeContact].avatar"
-                    :alt="`${filterContacts()[activeContact].name} avatar`" class="d-none d-sm-block">
-                <div class="me-auto">
-                    <h5 class="mb-1" v-if="filterContacts()[activeContact]?.name">
-                        {{ filterContacts()[activeContact]?.name }}
-                    </h5>
-                    <h6 class="mb-0 fw-light" v-if="filterContacts()[activeContact]?.status">
-                        {{ filterContacts()[activeContact]?.status }}
-                    </h6>
-                </div>
-                <i class="fa-solid fa-magnifying-glass d-none d-md-block"></i>
-                <i class="fa-solid fa-paperclip d-none d-md-block"></i>
-                <!-- Example split danger button -->
-                <div class="btn-group dropstart ms_dropstart">
-                    <button type="button" class="btn dropdown-toggle-split border-0" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        <i class="fa-solid fa-ellipsis-vertical"></i>
-                    </button>
-                    <ul class="dropdown-menu p-0 overflow-hidden">
-                        <li class="dropdown-item ms_delete" type="button" @click="deleteAllMessages">
-                            Cancella tutti i messaggi
-                        </li>
-                        <li class="dropdown-item ms_delete" type="button" @click="deleteContact">
-                            Cancella questa chat
-                        </li>
-                    </ul>
-                </div>
+        <div class="flex-grow-1">
+            <div id="welcome" v-if="this.activeContact === undefined">
+                <h2 class="fw-bold">Benvenuto su Boolzapp!</h2>
+                <h3 class="fw-bold">Seleziona una Chat per iniziare a messaggiare.</h3>
             </div>
-            <!-- /Elemento Persona -->
-            <!-- Messaggi -->
-            <ul id="messages" class="list-unstyled m-0">
-                <li v-for="(message, index) in filterContacts()[activeContact]?.messages"
-                    :class="{ 'sent': filterContacts()[activeContact].messages[index].status === 'sent', 'received': filterContacts()[activeContact].messages[index].status !== 'sent'}">
-                    <p class="m-0">{{message.message}}</p>
-                    <span class="m-0 fw-light">{{formatMessageDate(message.date)}}</span>
-                    <div class="ms_dropdown dropdown">
-                        <button type="button" class="btn btn-sm dropdown-toggle-split border-0"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-chevron-down"></i>
+            <div id="chat" v-else>
+                <!-- /Elemento Persona -->
+                <div class="element justify-content-end">
+                    <img v-if="filterContacts()[activeContact]" :src="filterContacts()[activeContact].avatar"
+                        :alt="`${filterContacts()[activeContact].name} avatar`" class="d-none d-sm-block">
+                    <div class="me-auto">
+                        <h5 class="mb-1" v-if="filterContacts()[activeContact]?.name">
+                            {{ filterContacts()[activeContact]?.name }}
+                        </h5>
+                        <h6 class="mb-0 fw-light" v-if="filterContacts()[activeContact]?.status">
+                            {{ filterContacts()[activeContact]?.status }}
+                        </h6>
+                    </div>
+                    <i class="fa-solid fa-magnifying-glass d-none d-md-block"></i>
+                    <i class="fa-solid fa-paperclip d-none d-md-block"></i>
+                    <!-- Example split danger button -->
+                    <div class="btn-group dropstart ms_dropstart">
+                        <button type="button" class="btn dropdown-toggle-split border-0" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
                         </button>
                         <ul class="dropdown-menu p-0 overflow-hidden">
-                            <li class="dropdown-item ms_info" type="button">Info Messaggio</li>
-                            <li class="dropdown-item ms_delete" type="button"
-                                @click="deleteMessage(activeContact, index)">
-                                Cancella Messaggio</li>
+                            <li class="dropdown-item ms_delete" type="button" @click="deleteAllMessages">
+                                Cancella tutti i messaggi
+                            </li>
+                            <li class="dropdown-item ms_delete" type="button" @click="deleteContact">
+                                Cancella questa chat
+                            </li>
                         </ul>
                     </div>
-                </li>
-            </ul>
-            <!-- /Messaggi -->
-            <!-- Input Nuovo Messaggio -->
-            <footer>
-                <i class="fa-regular fa-face-smile"></i>
-                <input type="text" placeholder="Scrivi un messaggio" v-model="newMessage" @keyup.enter="addMessage">
-                <i v-if="newMessage.length > 0" @click="addMessage" class="fa-solid fa-paper-plane" id="plane"></i>
-                <i v-else class="fa-solid fa-microphone" id="mic"></i>
-            </footer>
-            <!-- /Input Nuovo Messaggio -->
+                </div>
+                <!-- /Elemento Persona -->
+                <!-- Messaggi -->
+                <ul id="messages" class="list-unstyled m-0">
+                    <li v-for="(message, index) in filterContacts()[activeContact]?.messages"
+                        :class="{ 'sent': filterContacts()[activeContact].messages[index].status === 'sent', 'received': filterContacts()[activeContact].messages[index].status !== 'sent'}">
+                        <p class="m-0">{{message.message}}</p>
+                        <span class="m-0 fw-light">{{formatMessageDate(message.date)}}</span>
+                        <div class="ms_dropdown dropdown">
+                            <button type="button" class="btn btn-sm dropdown-toggle-split border-0"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </button>
+                            <ul class="dropdown-menu p-0 overflow-hidden">
+                                <li class="dropdown-item ms_info" type="button">Info Messaggio</li>
+                                <li class="dropdown-item ms_delete" type="button"
+                                    @click="deleteMessage(activeContact, index)">
+                                    Cancella Messaggio</li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+                <!-- /Messaggi -->
+                <!-- Input Nuovo Messaggio -->
+                <footer>
+                    <i class="fa-regular fa-face-smile"></i>
+                    <input type="text" placeholder="Scrivi un messaggio" v-model="newMessage" @keyup.enter="addMessage">
+                    <i v-if="newMessage.length > 0" @click="addMessage" class="fa-solid fa-paper-plane" id="plane"></i>
+                    <i v-else class="fa-solid fa-microphone" id="mic"></i>
+                </footer>
+                <!-- /Input Nuovo Messaggio -->
+            </div>
         </div>
         <!-- /Sezione Chat -->
     </main>
