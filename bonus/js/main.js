@@ -8,10 +8,11 @@ const { createApp } = Vue;
 const myApp = createApp({
     data() {
         return {
+            splashPage: true,
             activeContact: undefined, // Indice del contatto attualmente attivo
             newMessage: '', // Input per i nuovi Messaggi
-            newContactName: '',
-            newContactsCount: 0,
+            newContactName: '', // Input per i nuovi Contatti
+            newContactsCount: 0, // Contatore per i nuovi Contatti
             keyWord: '', // Parola chiave per la ricerca dei contatti
             // Risposte del computer
             quotes: [
@@ -205,6 +206,13 @@ const myApp = createApp({
             const lastMessageReceivedTime = this.getLastMessageReceivedTime(contact);
             this.updateStatus(`Ultimo accesso alle ${lastMessageReceivedTime}`, contact);
         });
+    },
+
+    mounted() {
+        // Nascondi la splash page dopo 1 secondo
+        setTimeout(() => {
+            this.splashPage = false;
+        }, 1000);
     },
 
     methods: {

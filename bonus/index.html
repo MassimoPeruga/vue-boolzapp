@@ -38,154 +38,166 @@
 
 <body>
     <main id="app" v-cloak>
-        <!-- Sezione menu -->
-        <div id="menu">
-            <header>
-                <!-- Elemento Persona -->
-                <div class="element">
-                    <img :src="user.avatar" :alt="`${user.name} avatar`" class="d-none d-sm-block">
-                    <h5 class="mb-0 me-auto">{{user.name}}</h5>
-                    <i class="fa-solid fa-circle-notch d-none d-lg-block"></i>
+        <!-- Splah page -->
+        <div id="splash" v-if="splashPage">
+            <img src="img/logo.jpg" alt="logo">
+            <i class="fa-solid fa-spinner fa-spin-pulse m-5"></i>
+        </div>
+        <!-- /Splah page -->
+        <div id="ms_app" v-else>
+            <!-- Sezione menu -->
+            <div id="menu">
+                <header>
+                    <!-- Elemento Persona -->
+                    <div class="element">
+                        <img :src="user.avatar" :alt="`${user.name} avatar`" class="d-none d-sm-block">
+                        <h5 class="mb-0 me-auto">{{user.name}}</h5>
+                        <i class="fa-solid fa-circle-notch d-none d-lg-block"></i>
 
-                    <!-- Button trigger modal -->
-                    <i class="fa-solid fa-message d-none d-lg-block" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"></i>
-                    <!-- Modal -->
-                    <div class="modal fade ms_modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header border-0">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Inserisci un nome per iniziare
-                                        una nuova chat</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <input type="text" v-model="newContactName" class="w-100 rounded-2 border-0">
-                                </div>
-                                <div class="modal-footer border-0">
-                                    <button type="button" class="btn ms_info" @click="addNewContact"
-                                        data-bs-dismiss="modal">Inizia</button>
-                                    <button type="button" class="btn ms_delete" data-bs-dismiss="modal">Annulla</button>
+                        <!-- Button trigger modal -->
+                        <i class="fa-solid fa-message d-none d-lg-block" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal"></i>
+                        <!-- Modal -->
+                        <div class="modal fade ms_modal" id="exampleModal" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header border-0">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Inserisci un nome per
+                                            iniziare
+                                            una nuova chat</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input type="text" v-model="newContactName" class="w-100 rounded-2 border-0">
+                                    </div>
+                                    <div class="modal-footer border-0">
+                                        <button type="button" class="btn ms_info" @click="addNewContact"
+                                            data-bs-dismiss="modal">Inizia</button>
+                                        <button type="button" class="btn ms_delete"
+                                            data-bs-dismiss="modal">Annulla</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <!-- /Modal -->
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
                     </div>
-                    <!-- /Modal -->
-                    <i class="fa-solid fa-ellipsis-vertical"></i>
-                </div>
-                <!-- /Elemento Persona -->
-                <!-- Alert -->
-                <div id="alert" class="d-none d-lg-flex">
-                    <i class="fa-solid fa-bell-slash"></i>
-                    <div>
-                        <p class="m-0">Ricevi notifiche di nuovi messaggi</p>
-                        <a href="#">Attiva notifiche desktop</a>
+                    <!-- /Elemento Persona -->
+                    <!-- Alert -->
+                    <div id="alert" class="d-none d-lg-flex">
+                        <i class="fa-solid fa-bell-slash"></i>
+                        <div>
+                            <p class="m-0">Ricevi notifiche di nuovi messaggi</p>
+                            <a href="#">Attiva notifiche desktop</a>
+                        </div>
                     </div>
-                </div>
-                <!-- Alert -->
-                <!-- Input di ricerca -->
-                <div id="search_container">
-                    <div class="input-group">
-                        <i id="search" class="fa-solid fa-magnifying-glass input-group-text"></i>
-                        <input v-model="keyWord" @keyup="filterContacts" type="text" class="form-control"
-                            placeholder="Cerca una chat" aria-describedby="search">
+                    <!-- Alert -->
+                    <!-- Input di ricerca -->
+                    <div id="search_container">
+                        <div class="input-group">
+                            <i id="search" class="fa-solid fa-magnifying-glass input-group-text"></i>
+                            <input v-model="keyWord" @keyup="filterContacts" type="text" class="form-control"
+                                placeholder="Cerca una chat" aria-describedby="search">
+                        </div>
                     </div>
-                </div>
-                <!-- /Input di ricerca -->
-            </header>
-            <!-- Lista  contatti -->
-            <ul>
-                <!-- Elemento Persona -->
-                <li class="element" v-for="(contact, index) in filterContacts()" role="button"
-                    :class="{ 'active': index === activeContact }" @click="changeActiveContact(index)">
-                    <img :src="contact.avatar" alt="`${contact.name} avatar`" class="my-auto d-none d-md-block">
-                    <div class="me-auto">
-                        <h5 class="mb-0">{{contact.name}}</h5>
-                        <h6 class="mb-0 fw-light overflow-hidden d-none d-sm-block" v-if="getLastMessage()">
-                            {{ getLastMessage(contact).message }}
-                        </h6>
-                    </div>
-                    <span class="fw-light ms-2 d-none d-lg-block" v-if="getLastMessage()">
-                        {{ getLastMessage(contact).time }}
-                    </span>
-                </li>
-                <!-- /Elemento Persona -->
-            </ul>
-            <!-- /Lista  contatti -->
-        </div>
-        <!-- /Sezione menu -->
-        <!-- Sezione Chat -->
-        <div class="flex-grow-1">
-            <div id="welcome" v-if="this.activeContact === undefined">
-                <h2 class="fw-bold">Benvenuto su Boolzapp!</h2>
-                <h3 class="fw-bold">Seleziona una Chat per iniziare a messaggiare.</h3>
+                    <!-- /Input di ricerca -->
+                </header>
+                <!-- Lista  contatti -->
+                <ul>
+                    <!-- Elemento Persona -->
+                    <li class="element" v-for="(contact, index) in filterContacts()" role="button"
+                        :class="{ 'active': index === activeContact }" @click="changeActiveContact(index)">
+                        <img :src="contact.avatar" alt="`${contact.name} avatar`" class="my-auto d-none d-md-block">
+                        <div class="me-auto">
+                            <h5 class="mb-0">{{contact.name}}</h5>
+                            <h6 class="mb-0 fw-light overflow-hidden d-none d-sm-block" v-if="getLastMessage()">
+                                {{ getLastMessage(contact).message }}
+                            </h6>
+                        </div>
+                        <span class="fw-light ms-2 d-none d-lg-block" v-if="getLastMessage()">
+                            {{ getLastMessage(contact).time }}
+                        </span>
+                    </li>
+                    <!-- /Elemento Persona -->
+                </ul>
+                <!-- /Lista  contatti -->
             </div>
-            <div id="chat" v-else>
-                <!-- /Elemento Persona -->
-                <div class="element justify-content-end">
-                    <img v-if="filterContacts()[activeContact]" :src="filterContacts()[activeContact].avatar"
-                        :alt="`${filterContacts()[activeContact].name} avatar`" class="d-none d-sm-block">
-                    <div class="me-auto">
-                        <h5 class="mb-1" v-if="filterContacts()[activeContact]?.name">
-                            {{ filterContacts()[activeContact]?.name }}
-                        </h5>
-                        <h6 class="mb-0 fw-light" v-if="filterContacts()[activeContact]?.status">
-                            {{ filterContacts()[activeContact]?.status }}
-                        </h6>
-                    </div>
-                    <i class="fa-solid fa-magnifying-glass d-none d-md-block"></i>
-                    <i class="fa-solid fa-paperclip d-none d-md-block"></i>
-                    <!-- Example split danger button -->
-                    <div class="btn-group dropstart ms_dropstart">
-                        <button type="button" class="btn dropdown-toggle-split border-0" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                        </button>
-                        <ul class="dropdown-menu p-0 overflow-hidden">
-                            <li class="dropdown-item ms_delete" type="button" @click="deleteAllMessages">
-                                Cancella tutti i messaggi
-                            </li>
-                            <li class="dropdown-item ms_delete" type="button" @click="deleteContact">
-                                Cancella questa chat
-                            </li>
-                        </ul>
-                    </div>
+            <!-- /Sezione menu -->
+            <!-- Sezione Chat -->
+            <div class="flex-grow-1">
+                <div id="welcome" v-if="this.activeContact === undefined">
+                    <h2 class="fw-bold">Benvenuto su Boolzapp!</h2>
+                    <h3 class="fw-bold">Seleziona una Chat per iniziare a messaggiare.</h3>
                 </div>
-                <!-- /Elemento Persona -->
-                <!-- Messaggi -->
-                <ul id="messages" class="list-unstyled m-0">
-                    <li v-for="(message, index) in filterContacts()[activeContact]?.messages"
-                        :class="{ 'sent': filterContacts()[activeContact].messages[index].status === 'sent', 'received': filterContacts()[activeContact].messages[index].status !== 'sent'}">
-                        <p class="m-0">{{message.message}}</p>
-                        <span class="m-0 fw-light">{{formatMessageDate(message.date)}}</span>
-                        <div class="ms_dropdown dropdown">
-                            <button type="button" class="btn btn-sm dropdown-toggle-split border-0"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fa-solid fa-chevron-down"></i>
+                <div id="chat" v-else>
+                    <!-- /Elemento Persona -->
+                    <div class="element justify-content-end">
+                        <img v-if="filterContacts()[activeContact]" :src="filterContacts()[activeContact].avatar"
+                            :alt="`${filterContacts()[activeContact].name} avatar`" class="d-none d-sm-block">
+                        <div class="me-auto">
+                            <h5 class="mb-1" v-if="filterContacts()[activeContact]?.name">
+                                {{ filterContacts()[activeContact]?.name }}
+                            </h5>
+                            <h6 class="mb-0 fw-light" v-if="filterContacts()[activeContact]?.status">
+                                {{ filterContacts()[activeContact]?.status }}
+                            </h6>
+                        </div>
+                        <i class="fa-solid fa-magnifying-glass d-none d-md-block"></i>
+                        <i class="fa-solid fa-paperclip d-none d-md-block"></i>
+                        <!-- Example split danger button -->
+                        <div class="btn-group dropstart ms_dropstart">
+                            <button type="button" class="btn dropdown-toggle-split border-0" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="fa-solid fa-ellipsis-vertical"></i>
                             </button>
                             <ul class="dropdown-menu p-0 overflow-hidden">
-                                <li class="dropdown-item ms_info" type="button">Info Messaggio</li>
-                                <li class="dropdown-item ms_delete" type="button"
-                                    @click="deleteMessage(activeContact, index)">
-                                    Cancella Messaggio</li>
+                                <li class="dropdown-item ms_delete" type="button" @click="deleteAllMessages">
+                                    Cancella tutti i messaggi
+                                </li>
+                                <li class="dropdown-item ms_delete" type="button" @click="deleteContact">
+                                    Cancella questa chat
+                                </li>
                             </ul>
                         </div>
-                    </li>
-                </ul>
-                <!-- /Messaggi -->
-                <!-- Input Nuovo Messaggio -->
-                <footer>
-                    <i class="fa-regular fa-face-smile"></i>
-                    <input type="text" placeholder="Scrivi un messaggio" v-model="newMessage" @keyup.enter="addMessage">
-                    <i v-if="newMessage.length > 0" @click="addMessage" class="fa-solid fa-paper-plane" id="plane"></i>
-                    <i v-else class="fa-solid fa-microphone" id="mic"></i>
-                </footer>
-                <!-- /Input Nuovo Messaggio -->
+                    </div>
+                    <!-- /Elemento Persona -->
+                    <!-- Messaggi -->
+                    <ul id="messages" class="list-unstyled m-0">
+                        <li v-for="(message, index) in filterContacts()[activeContact]?.messages"
+                            :class="{ 'sent': filterContacts()[activeContact].messages[index].status === 'sent', 'received': filterContacts()[activeContact].messages[index].status !== 'sent'}">
+                            <p class="m-0">{{message.message}}</p>
+                            <span class="m-0 fw-light">{{formatMessageDate(message.date)}}</span>
+                            <div class="ms_dropdown dropdown">
+                                <button type="button" class="btn btn-sm dropdown-toggle-split border-0"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </button>
+                                <ul class="dropdown-menu p-0 overflow-hidden">
+                                    <li class="dropdown-item ms_info" type="button">Info Messaggio</li>
+                                    <li class="dropdown-item ms_delete" type="button"
+                                        @click="deleteMessage(activeContact, index)">
+                                        Cancella Messaggio</li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                    <!-- /Messaggi -->
+                    <!-- Input Nuovo Messaggio -->
+                    <footer>
+                        <i class="fa-regular fa-face-smile"></i>
+                        <input type="text" placeholder="Scrivi un messaggio" v-model="newMessage"
+                            @keyup.enter="addMessage">
+                        <i v-if="newMessage.length > 0" @click="addMessage" class="fa-solid fa-paper-plane"
+                            id="plane"></i>
+                        <i v-else class="fa-solid fa-microphone" id="mic"></i>
+                    </footer>
+                    <!-- /Input Nuovo Messaggio -->
+                </div>
             </div>
+            <!-- /Sezione Chat -->
         </div>
-        <!-- /Sezione Chat -->
     </main>
     <!-- Script di Bootstrap 5-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"

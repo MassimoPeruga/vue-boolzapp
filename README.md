@@ -39,4 +39,5 @@ Cancella messaggio: cliccando sul messaggio appare un menu a tendina che permett
 5. Viene data la possibilità all'utente di cancellare tutti i messaggi di un contatto o di cancellare l'intera chat con tutti i suoi dati: cliccando sull'icona con i tre pallini in alto a destra, si apre un dropdown menu in cui sono presenti le voci "Elimina messaggi" ed "Elimina chat"; cliccando su di essi si cancellano rispettivamente tutti i messaggi di quel contatto (quindi rimane la conversazione vuota) oppure l'intera chat comprensiva di tutti i dati del contatto oltre che tutti i suoi messaggi (quindi sparisce il contatto anche dalla lista di sinistra);
 6. Viene data la possibilità all'utente di aggiungere una nuova conversazione, inserendo in un popup il nome del nuovo contatto, al nuovo contatto viene assegnata un'immagine casuale come avatar;
 7. Aggiunta dello scroll in giù in automatico fino al messaggio più recente quando viene aggiunto un nuovo messaggio alla conversazione;
-8. Viene visualizzato un messaggio di benvenuto che invita l'utente a selezionare un chat dalla lista per visualizzare i suoi messaggi.
+8. Viene visualizzato un messaggio di benvenuto che invita l'utente a selezionare un chat dalla lista per visualizzare i suoi messaggi;
+9. Viene visualizzata una splash page visibile per 1s all'apertura dell'app.
