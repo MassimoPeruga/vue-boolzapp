@@ -3,6 +3,28 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    border-right: 2px solid #d6d6d6;
+}
+
+/* Stili per la modalità dark */
+#app.dark-mode #menu {
+    border-color: #111b21;
+}
+
+#menu header .element {
+    height: 70px;
+    padding: 5px 20px;
+    color: #293237;
+}
+
+/* Stili per la modalità dark */
+#app.dark-mode #menu header .element {
+    background-color: #667781;
+    color: #eefefa;
+}
+
+#app.dark-mode #menu header .element i {
+    color: #293237;
 }
 
 #alert {
@@ -34,6 +56,11 @@
     background-color: #fafafa;
 }
 
+/* Stili per la modalità dark */
+#app.dark-mode #search_container {
+    background-color: #667781;
+}
+
 #search {
     display: flex;
     justify-content: center;
@@ -50,6 +77,17 @@
     margin: 0;
 }
 
+/* Stili per la modalità dark */
+#app.dark-mode #search,
+#app.dark-mode #search_container input {
+    background-color: #293237;
+    color: #eefefa;
+}
+
+#app.dark-mode #search_container input::placeholder {
+    color: #eefefa;
+}
+
 #search_container input:focus {
     outline: 1px solid #00968880;
     border-color: transparent;
@@ -62,6 +100,12 @@
     padding: 0;
     margin: 0;
     overflow-y: scroll;
+}
+
+/* Stili per la modalità dark */
+#app.dark-mode #menu ul {
+    background-color: #293237;
+    color: #eefefa;
 }
 
 #menu ul .element {
@@ -83,8 +127,20 @@
     background-color: #e9ebeb;
 }
 
+/* Stili per la modalità dark */
+#app.dark-mode #menu ul .element.active,
+#app.dark-mode #menu ul .element:hover {
+    background-color: #667781;
+}
+
 .ms_modal>*>* {
     background-color: #dcdbd3;
+}
+
+/* Stili per la modalità dark */
+#app.dark-mode .ms_modal>*>* {
+    background-color: #293237;
+    color: #eefefa;
 }
 
 @media (min-width: 992px) {

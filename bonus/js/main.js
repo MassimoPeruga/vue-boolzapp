@@ -9,6 +9,7 @@ const myApp = createApp({
     data() {
         return {
             splashPage: true, // Variabile per mostrare la splash page
+            themeMode: 'light', // inizializza la modalità del tema a 'light'
             showChat: false, // Variabile per passare dalla visualizzazione dei contatti a quella della chat
             activeContact: undefined, // Indice del contatto attualmente attivo
             newMessage: '', // Input per i nuovi Messaggi
@@ -217,6 +218,16 @@ const myApp = createApp({
     },
 
     methods: {
+        // Cambia la modalità del tema tra light e dark
+        toggleTheme() {
+            this.themeMode = this.themeMode === 'light' ? 'dark' : 'light';
+
+            const mainWrapper = document.getElementById('app');
+            if (mainWrapper) {
+                mainWrapper.classList.toggle('dark-mode', this.themeMode === 'dark');
+            }
+        },
+
         // Mostra la sezione chat
         toggleChatView() {
             this.showChat = !this.showChat;

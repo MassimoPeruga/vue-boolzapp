@@ -52,7 +52,11 @@
                     <div class="element">
                         <img :src="user.avatar" :alt="`${user.name} avatar`">
                         <h5 class="mb-0 me-auto">{{user.name}}</h5>
-                        <i class="fa-solid fa-circle-notch"></i>
+                        <!-- Tema chiaro -->
+                        <i v-if="this.themeMode === 'light'" class="fa-solid fa-sun" @click="toggleTheme"></i>
+                        <!-- Tema scuro -->
+                        <i v-if="this.themeMode === 'dark'" class="fa-solid fa-moon" @click="toggleTheme"></i>
+
 
                         <!-- Button trigger modal -->
                         <i class="fa-solid fa-message" data-bs-toggle="modal" data-bs-target="#exampleModal"></i>
@@ -62,9 +66,9 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header border-0">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Inserisci un nome per
+                                        <h2 class="modal-title fs-5" id="exampleModalLabel">Inserisci un nome per
                                             iniziare
-                                            una nuova chat</h1>
+                                            una nuova chat</h2>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
@@ -85,7 +89,7 @@
                     </div>
                     <!-- /Elemento Persona -->
                     <!-- Alert -->
-                    <div id="alert" class="d-none d-lg-flex">
+                    <div id="alert" class="d-none d-lg-flex text-black">
                         <i class="fa-solid fa-bell-slash"></i>
                         <div>
                             <p class="m-0">Ricevi notifiche di nuovi messaggi</p>
